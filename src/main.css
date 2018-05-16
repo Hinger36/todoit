@@ -1,0 +1,106 @@
+.clearfix::after {
+  content: '';
+  display: table-cell;
+  clear: both;
+}
+.clearfix {
+  zoom: 1;
+}
+
+/* top  nav */
+.header {
+  background-color:#db4c3f;
+  position: fixed;
+  width: 100%;
+  box-shadow: 5px 0 5px #333;
+  border: 1px solid #ec5e4f; 
+  z-index: 1000;
+}
+.header-nav {
+  max-width: 950px;
+  margin: 0 auto;
+
+}
+
+.header-nav .logo {
+  width: 50px;
+  height: 40px;
+  background: url(../images/logs.png) no-repeat;
+  background-size: 35px;
+  background-position-y: 3px;
+  margin-left: 35px;
+}
+/* body */
+.main {
+  background-color: #fafafa;
+  padding-top: 40px; 
+  min-height: 100%;
+}
+.main .inner {
+  background-color: #fff;
+  padding: 30px 40px;
+  max-width: 950px;
+  margin: 0 auto;
+}
+
+.content {
+  /* position: absolute; */
+  /* left: 50%;
+  transform: translate(-50%); */
+  margin: 0 auto;
+}
+.in-edit {
+  border: 1px solid #ccc;
+  padding: 5px 15px;
+  height: 30px;
+  width: 300px;
+  line-height: 30px;
+  border-radius: 3px;
+}
+.in-edit:focus {
+  outline:none;
+}
+.text-box {
+  width: 450px;
+  margin: 0 auto;
+}
+.text-box .btn {
+  width: 100px;
+  height: 38px;
+  background-color: #db4c3f;
+  color: #fff;
+  font-size: 1em;
+  font-weight: bold;
+  border: 1px solid #ec5e4f;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.todolist {
+  width: 500px;
+  margin: 0 auto;
+}
+.todolist li {
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+  cursor: pointer;
+}
+.todolist li p span {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background: url(../images/webwxgetmsgimg.png) no-repeat;
+  background-size: 100%; 
+  vertical-align: middle;
+  margin: 5px;
+
+}
+.todolist li p {
+  display: inline-block;
+  padding: 0 5px;;
+  font-size: 1em;
+  height: 37px;
+  line-height: 37px;
+  color: #333;
+}
+

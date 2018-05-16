@@ -1,0 +1,19 @@
+{
+  "name": "todoit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hinger36/todoit.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hinger36/todoit/issues"
+  },
+  "homepage": "https://github.com/Hinger36/todoit#readme"
+}
