@@ -61,7 +61,7 @@
   outline:none;
 }
 .text-box {
-  width: 450px;
+  max-width: 450px;
   margin: 0 auto;
 }
 .text-box .btn {
@@ -73,14 +73,15 @@
   font-weight: bold;
   border: 1px solid #ec5e4f;
   cursor: pointer;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .todolist {
-  width: 500px;
+  max-width: 500px;
   margin: 0 auto;
 }
 .todolist li {
+  position: relative;
   border-bottom: 1px solid #ccc;
   padding: 10px 0;
   cursor: pointer;
@@ -95,12 +96,24 @@
   margin: 5px;
 
 }
+.todolist li p i {
+  padding-right: 10px;
+  font-size: 0.5em;
+}
 .todolist li p {
   display: inline-block;
   padding: 0 5px;;
   font-size: 1em;
-  height: 37px;
   line-height: 37px;
   color: #333;
 }
 
+.todolist li em {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  margin: 5px 0;
+  right: -10px;
+  background: url(../images/delete.png) no-repeat;
+  background-size: 100%;
+}
