@@ -176,7 +176,6 @@
     let transaction = db.transaction(DB_STORE_NAME, 'readwrite');
     let objectStore = transaction.objectStore(DB_STORE_NAME);
     let req = objectStore.get(13);
-    console.log(req)
     req.onsuccess = function (event) {
       console.log(req.result.task);
     }
@@ -194,8 +193,8 @@
       } else {
         console.log('not found');
       }
-      if (todolist) {
-        listShow()
+      if (todolist.length !== 0) {
+        listShow();
       }
     }
   }
