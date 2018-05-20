@@ -33,7 +33,7 @@
 /* body */
 .main {
   background-color: #fafafa;
-  padding-top: 40px; 
+  /* padding-top: 40px;  */
   height: 100%;
 }
 .main .inner {
@@ -43,9 +43,9 @@
 }
 
 .content {
-  padding-top: 40px;
+  padding-top: 70px;
   float: right;
-  border: 1px solid #ccc;
+  border-right: 1px solid #ccc;
   background-color: #fff;
   width: 683px;
   height: 100%;
@@ -136,7 +136,7 @@
   width: 265px;
   background-color: #fafafa;
   height: 100%;
-  padding-top: 40px; 
+  padding-top: 70px; 
   border-right: 1px solid #ccc;
 }
 .filter {
