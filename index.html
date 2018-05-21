@@ -20,42 +20,70 @@
         <div>
           <ul id="top-filters">
             <li class="filter">
-              <span class="menu-icon"></span>
-              <span class="menu-text">今天</span>
+              <a href="">
+                <span class="menu-icon">
+                    <svg class="icon" aria-hidden="true">
+                      <use xlink:href="#icon-rili1"></use>
+                    </svg>
+                </span>
+                <span class="menu-text">今天</span>
+              </a>             
             </li>
-            <li class="filter">
-                <span><img src="images/继续未完成.png" alt="" width="23px;"></span>
-                <span class="menu-text">未来7天</span>
+            
+            <li class="filter fixmenu">
+              <span>
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-zhankai"></use>
+                </svg>
+              </span>
+              <span class="menu-text">
+                <span>项目</span>
+                
+              </span>
             </li>
-            <li class="filter">
-              <span><img src="images/继续未完成.png" alt="" width="23px;"></span>
-              <span class="menu-text">项目</span>
+            <li>
+              <ul class="project-list">
+                <li class="pro-item">个人</li>
+                <li class="pro-item">工作</li>
+                <li class="pro-item">购物</li>
+                <li class="pro-item">杂项</li>
+              </ul>
             </li>
           </ul>
         </div>
       </div>
-      <div class="content">
-        <div class="text-box">
-            <!-- <label for="add-list">edit</label> -->
-            <input type="text" name="todoitem" id="add-list" class="in-edit" placeholder="例如：每天跑步">
-            <button class="btn">添加任务</button>
-        </div>
-        <div class="lists">
-          <ul class="todolist">
-            <li style="border-bottom: none;">
-              <div class="completed">
-                <img src="images/736b25b3212facd336d9bc0fd047c07e.png" width="250px" height="180px" class="illustration">
-                <div class="text">你的任务完成了！#TodolistZero</div>
-                <div></div>
-              </div>
-            </li>
-          </ul>
+      <div class="right-box clearfix">
+        <div class="content">
+          <div class="tag">
+            <span>今天</span>
+            <span class="time"></span>
+          </div>
+  
+          <div class="text-box">
+              <!-- <label for="add-list">edit</label> -->
+              <input type="text" name="todoitem" id="add-list" class="in-edit" placeholder="例如：每天跑步">
+              <button class="btn">添加任务</button>
+          </div>
+          <div class="lists">
+            <ul class="todolist">
+              <li style="border-bottom: none;">
+                <div class="completed">
+                  <img src="images/736b25b3212facd336d9bc0fd047c07e.png" width="250px" height="180px" class="illustration">
+                  <div class="text">你的任务完成了！#TodolistZero</div>
+                  <div></div>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
       
+      
     </div>
   </div>
+  <script src="./src/iconfont.js"></script>
   <script src="./src/main.js"></script>
   <!-- <script src="./src/indexDB.js"></script> -->
+
 </body>
 </html>

@@ -1,3 +1,4 @@
+
 .clearfix::after {
   content: '';
   display: table;
@@ -6,7 +7,9 @@
 .clearfix {
   zoom: 1;
 }
-
+body {
+  color: #fafafa;
+}
 /* top  nav */
 .header {
   background-color:#db4c3f;
@@ -33,7 +36,6 @@
 /* body */
 .main {
   background-color: #fafafa;
-  /* padding-top: 40px;  */
   height: 100%;
 }
 .main .inner {
@@ -45,10 +47,19 @@
 .content {
   padding-top: 70px;
   float: right;
-  border-right: 1px solid #ccc;
   background-color: #fff;
-  width: 683px;
-  height: 100%;
+  width: 700px;
+}
+.tag {
+  color: #333;
+  max-width: 450px;
+  margin: 0 auto;
+  padding-bottom: 15px;
+  font-size: 1.2rem;
+}
+.tag .time {
+  font-size: 0.5rem;
+  color: #aaa;
 }
 .in-edit {
   border: 1px solid #ccc;
@@ -131,17 +142,14 @@
 }
 /* 左菜单栏 */
 .lefe-menu {
-  /* float: left; */
   position: fixed;
-  width: 265px;
+  width: 250px;
   background-color: #fafafa;
   height: 100%;
   padding-top: 70px; 
   border-right: 1px solid #ccc;
 }
 .filter {
-  /* height: 22px; */
-  /* line-height: 22px; */
   padding: 9px 5px;
   color: #333;
   font-size: 0.9rem;
@@ -152,15 +160,44 @@
 .filter:hover {
   background-color: #fff;
 }
+.fixmenu:hover {
+  background-color: #eee;
+}
 .menu-text {
-  /* display: inline-block; */
-  /* height: 22px; */
-  /* line-height: 24px; */
+  padding-left: 10px;
+}
+.filter a {
+  text-decoration: none;
+  color: #333;
+  display: block;
 }
 .menu-icon {
   display: inline-block;
   height: 22px;
   width: 22px;
-  background: url(../images/继续未完成.png) no-repeat;
   background-size: 100%;
+}
+.icon {
+  width: 1em; height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+  font-size: 1.5rem;
+  color: #333;
+}
+.project-list {
+  padding: 10px 40px;
+}
+.pro-item {
+  padding: 13px 5px;
+  color: #333;
+  cursor: pointer;
+}
+.pro-item:hover {
+  background-color: #eee;
+}
+.right-box {
+  background-color: #fff;
+  border-right: 1px solid #ccc;
+  height: 100%;
 }

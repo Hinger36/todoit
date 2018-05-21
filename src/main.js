@@ -1,7 +1,18 @@
 (function () {
   'use strict'
   //task list init
+  let tags = '今天';
   let todolist = [];
+
+
+  function init() {
+    let time = document.getElementsByClassName('time')[0];
+    time.innerHTML = getNowTime().week;
+    additem();
+    getItem();
+    initDb();
+    listMenu()
+  }
 
   //事件监听 兼容性封装
   function addEvent(ele, type, handle) {
@@ -33,13 +44,13 @@
       }
       todoitem = {
         id: ID(),
-        time: getNowTime(),
+        time: getNowTime().day,
         task: addList.value,
         //标记是否完成
         status: false,
+        tag: tags,
       };
       todolist.unshift(todoitem);
-      console.log(todolist);
       addList.value = '';
       addDB();
       listShow();
@@ -48,10 +59,19 @@
   }
   //显示在列表中
   function listShow() {
+    let obj = {};
+    if (todolist.length === 0 && tags === '今天') {
+      window.location.reload()
+    }
+    if (tags === '今天') {
+      obj = todolist;
+    } else {
+      obj  = tagList();
+    }
     let list = document.getElementsByClassName('todolist')[0];   
     list.innerHTML = '';
 
-    todolist.forEach((ele, index, array) => {
+      obj.forEach((ele, index, array) => {
       let li = document.createElement('li');
       let p = document.createElement('p');
       let em = document.createElement('em');
@@ -73,49 +93,101 @@
       //兼容性处理
       e = e || event;
       let target = e.target || e.srcElement;
-     
-      if (target.nodeName === 'P') {
+      function getNode(target) {
+        if (target.nodeName === 'P') {
+          markItem();
+        } else if (target.nodeName !== 'LI'){
+          getNode(target.parentNode);
+        }
+        return;
+
+      }
+      getNode(target);
+      function markItem() {
         let liItem = target.parentNode;
         let index = Array.prototype.indexOf.call(liItem.parentNode.children, liItem);
-        todolist[index].status = true;
+        if (tags === '今天') {  
+          todolist[index].status = true;
+          loopArr();
+        } else {
+          let taglist = todolist.filter(function (ele, index, arr ) {
+            return  ele.tag === tags;
+          });
+          todolist.forEach(function (ele) {
+            if (ele.id === taglist[index].id) {
+              ele.status = true;
+              loopArr();
+            }
+          });
+        }       
       }
-      if (target.nodeName === 'I') {
-        let liItem = target.parentNode.parentNode;
-        let index = Array.prototype.indexOf.call(liItem.parentNode.children, liItem);
-        todolist[index].status = true;
-
-        target.parentNode.style.textDecoration = 'line-through';
-        target.parentNode.children[0].style.background = 'url(../images/success.png) no-repeat';
-      }
+      
       if (target.nodeName === 'EM') {
         //删除一条待办事项
         let liItem = target.parentNode;
         let index = Array.prototype.indexOf.call(liItem.parentNode.children, liItem);
         let item = todolist.splice(index, 1)[0];
-        console.log(item.id);
-        deleteDB(item.id);    
+        deleteDB(item.id);   
+        loopArr(); 
       }
-      todolist.forEach((ele, index, array) => {
-        if (ele.status) {
-          let fini = array.splice(index, 1)[0];
-          array.push(fini);
-        }
-      });
-      addDB();
-      listShow();
+      function loopArr() {
+        todolist.forEach((ele, index, array) => {
+          if (ele.status) {
+            let fini = array.splice(index, 1)[0];
+            array.push(fini);
+          }
+        });
+        addDB();
+        if (tags !== '今天') {
+          listShow();
+        } else {
+          listShow();
+        }        
+      }
+   
     });
   }
   
   function getNowTime() {
     let foo = new Date();
-    let now = foo.getMonth() + 1 + '月' + foo.getDate() + '日' + foo.getHours() + ':' + foo.getMinutes();
-    return now;
+    let month = foo.getMonth() + 1 + '月';
+    let day = foo.getDate() + '日';
+    let hours = foo.getHours();
+    let minutes = foo.getMinutes();
+    let week = foo.getDay();
+    let time = {};
+    switch(week) {
+      case 0:
+        week = '星期日';
+        break;
+      case 1:
+        week = '星期一';
+        break;
+      case 2:
+        week = '星期二';
+        break;
+      case 3:
+        week = '星期三';
+        break;
+      case 4:
+        week = '星期四';
+        break;
+      case 5:
+        week = '星期五';
+        break;
+      case 6:
+        week = '星期六';
+        break;
+      default: 
+        console.log('error')
+    }
+    time = {
+      day: month + day + hours + ':' + minutes,
+      week: week + month + day
+    }
+    return time;
   }
-  function init() {
-    additem();
-    getItem();
-    initDb();
-  }
+  
   //
   //
   //indexedDB数据库部分
@@ -167,7 +239,6 @@
     let transaction = db.transaction(DB_STORE_NAME, 'readwrite');
     let objectStore = transaction.objectStore(DB_STORE_NAME);
     objectStore.delete(id);
-    console.log(objectStore)
     objectStore.onsuccess = function (event) {
       console.log('删除成功');
     }
@@ -177,7 +248,6 @@
     let objectStore = transaction.objectStore(DB_STORE_NAME);
     let req = objectStore.get(13);
     req.onsuccess = function (event) {
-      console.log(req.result.task);
     }
 
   }
@@ -187,7 +257,6 @@
     objectStore.openCursor().onsuccess = function (event) {
       let cursor = event.target.result;
       if (cursor) {
-        console.log(cursor.value)
         todolist.push(cursor.value);
         cursor.continue();
       } else {
@@ -195,13 +264,40 @@
       }
       if (todolist.length !== 0) {
         listShow();
-      }
+      } 
     }
   }
-
+  function listMenu() {
+    let ul = document.getElementsByClassName('project-list')[0];
+    let menu = document.getElementsByClassName('fixmenu')[0];
+    let tag = document.getElementsByClassName('tag')[0].children[0];
+    addEvent(menu, 'click', function (event) {
+      event.stopPropagation();
+        if (!ul.style.display) {
+          ul.style.display = 'none';
+        } else {
+          ul.style.display = '';
+        }      
+    });
+    addEvent(ul, 'click', function (event) {
+      let target = event.target;
+      if (target.nodeName === 'LI') {
+        tag.innerHTML = target.innerHTML;
+        tags = tag.innerHTML;
+        
+        listShow();
+       
+      }    
+    });
+  }
+  function tagList() {        
+    let taglist = todolist.filter(function (ele, index, arr) {
+     return tags === ele.tag;
+    });
+    return taglist;
+  }     
+  
   init();
 
-
-  
 })()
 
