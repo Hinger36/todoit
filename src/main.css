@@ -22,10 +22,12 @@ body {
 .header-nav {
   max-width: 950px;
   margin: 0 auto;
-
+  height: 40px;
 }
 
+
 .header-nav .logo {
+  display: inline-block;
   width: 50px;
   height: 40px;
   background: url(../images/logs.png) no-repeat;
@@ -33,6 +35,58 @@ body {
   background-position-y: 3px;
   margin-left: 35px;
 }
+
+.header-nav  .menu-icon {
+  display: block;
+  float: left;
+  width: 36px;
+  height: 26px;
+  line-height: 0;
+  padding-top: 8px;
+  padding-left: 8px;
+  text-align: center;
+}
+/* .header-nav input:checked ~ {
+  display: inline-block;
+} */
+.header-nav .nav-toggle {
+  display: none;
+}
+.header-nav label {
+  display: none;
+}
+@media screen and (max-width: 650px) {
+  .header-nav label {
+    display: inline-block;
+  }
+  .header-nav .logo {
+    display: none;
+  }
+  .left-menu {
+    display: none;
+  }
+  .right-box .content {
+    margin-left: 0;
+  }
+  .content .tag {
+    text-align: center;
+  }
+  
+
+}
+@media screen and (max-width: 480px) {
+  .content .text-box .in-edit {  
+    width: 220px; 
+  } 
+  .content .text-box .btn {
+    width: 80px;
+  }
+  .lists .todolist {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+}
+
 /* body */
 .main {
   background-color: #fafafa;
@@ -44,11 +98,17 @@ body {
   height: 100%;
 }
 
+.right-box {
+  background-color: #fff;
+  border-right: 1px solid #ccc;
+  height: 100%;
+  width: 100%;
+}
 .content {
   padding-top: 70px;
-  float: right;
   background-color: #fff;
-  width: 700px;
+  max-width: 700px;
+  margin-left: 250px;
 }
 .tag {
   color: #333;
@@ -73,7 +133,7 @@ body {
   outline:none;
 }
 .text-box {
-  max-width: 450px;
+  text-align: center;
   margin: 0 auto;
 }
 .text-box .btn {
@@ -141,16 +201,17 @@ body {
   color: #333;
 }
 /* 左菜单栏 */
-.lefe-menu {
+.left-menu {
   position: fixed;
   width: 250px;
   background-color: #fafafa;
   height: 100%;
   padding-top: 70px; 
   border-right: 1px solid #ccc;
+  z-index: 900;
 }
 .filter {
-  padding: 9px 5px;
+  padding: 9px 15px;
   color: #333;
   font-size: 0.9rem;
   vertical-align: middle;
@@ -186,7 +247,7 @@ body {
   color: #333;
 }
 .project-list {
-  padding: 10px 40px;
+  padding: 10px 10px 10px 50px;
 }
 .pro-item {
   padding: 13px 5px;
@@ -195,9 +256,4 @@ body {
 }
 .pro-item:hover {
   background-color: #eee;
-}
-.right-box {
-  background-color: #fff;
-  border-right: 1px solid #ccc;
-  height: 100%;
 }

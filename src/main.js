@@ -271,6 +271,8 @@
     let ul = document.getElementsByClassName('project-list')[0];
     let menu = document.getElementsByClassName('fixmenu')[0];
     let tag = document.getElementsByClassName('tag')[0].children[0];
+    let nav = document.getElementsByClassName('nav-toggle')[0];
+    let lmenu = document.getElementsByClassName('left-menu')[0];
     addEvent(menu, 'click', function (event) {
       event.stopPropagation();
         if (!ul.style.display) {
@@ -289,6 +291,13 @@
        
       }    
     });
+    addEvent(nav, 'click', function () {
+      if (!lmenu.style.display) {
+        lmenu.style.display = 'block';
+      } else {
+        lmenu.style.display = '';
+      }    
+    })
   }
   function tagList() {        
     let taglist = todolist.filter(function (ele, index, arr) {
