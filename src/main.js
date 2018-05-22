@@ -45,6 +45,7 @@
       todoitem = {
         id: ID(),
         time: getNowTime().day,
+        timeing : Date.now(),
         task: addList.value,
         //标记是否完成
         status: false,
@@ -68,6 +69,9 @@
     } else {
       obj  = tagList();
     }
+    todolist.sort(function (a, b) {
+      return a.status - b.status;
+    })
     let list = document.getElementsByClassName('todolist')[0];   
     list.innerHTML = '';
 
@@ -126,17 +130,25 @@
         //删除一条待办事项
         let liItem = target.parentNode;
         let index = Array.prototype.indexOf.call(liItem.parentNode.children, liItem);
-        let item = todolist.splice(index, 1)[0];
-        deleteDB(item.id);   
-        loopArr(); 
+        if (tags !== '今天') {
+          todolist.filter(function (ele, ind, arr) {
+            if (ele === tagList()[index]) {
+              console.log(ind)
+              let item = todolist.splice(ind, 1)[0];
+              deleteDB(item.id);   
+              loopArr();
+              return 
+            }
+            
+          })
+        } else {
+          
+          let item = todolist.splice(index, 1)[0];
+          deleteDB(item.id);   
+          loopArr(); 
+        }        
       }
       function loopArr() {
-        todolist.forEach((ele, index, array) => {
-          if (ele.status) {
-            let fini = array.splice(index, 1)[0];
-            array.push(fini);
-          }
-        });
         addDB();
         if (tags !== '今天') {
           listShow();
@@ -212,6 +224,7 @@
       let db = event.target.result;
       //创建一个对象存储空间
       let objectStore = db.createObjectStore(DB_STORE_NAME, { keyPath: 'id', autoIncrement: false });
+      objectStore.createIndex('timeing', 'timeing', {unique: false});
       console.log('创建对象仓库成功');
       
     };
@@ -254,7 +267,7 @@
 
   function getAllDB() {
     let objectStore = db.transaction(DB_STORE_NAME).objectStore(DB_STORE_NAME);
-    objectStore.openCursor().onsuccess = function (event) {
+    objectStore.index('timeing').openCursor(null, 'prev').onsuccess = function (event) {
       let cursor = event.target.result;
       if (cursor) {
         todolist.push(cursor.value);
