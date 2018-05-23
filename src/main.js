@@ -133,6 +133,7 @@
         if (tags !== '今天') {
           todolist.filter(function (ele, ind, arr) {
             if (ele === tagList()[index]) {
+              index = null;
               console.log(ind)
               let item = todolist.splice(ind, 1)[0];
               deleteDB(item.id);   
