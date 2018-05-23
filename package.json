@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "webpack-serve  --progress --colors --port 8014 --host 192.168.1.104 -d"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/Hinger36/todoit/issues"
   },
-  "homepage": "https://github.com/Hinger36/todoit#readme"
+  "homepage": "https://github.com/Hinger36/todoit#readme",
+  "devDependencies": {
+    "webpack-serve": "^1.0.2",
+    "webpack": "^4.8.1",
+    "webpack-cli": "^2.1.3"
+  }
 }
