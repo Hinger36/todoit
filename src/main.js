@@ -287,6 +287,7 @@
     let tag = document.getElementsByClassName('tag')[0].children[0];
     let nav = document.getElementsByClassName('nav-toggle')[0];
     let lmenu = document.getElementsByClassName('left-menu')[0];
+    let box = document.getElementsByClassName('right-box')[0];
     addEvent(menu, 'click', function (event) {
       event.stopPropagation();
         if (!ul.style.display) {
@@ -311,6 +312,9 @@
       } else {
         lmenu.style.display = '';
       }    
+    })
+    addEvent(box, 'click', function () {
+        lmenu.style.display = '';
     })
   }
   function tagList() {        
