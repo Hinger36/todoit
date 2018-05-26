@@ -518,9 +518,13 @@
       event.stopPropagation();
       if (!ul.style.display) {
         ul.style.display = 'none';
+        menu.children[0].children[0].style.display = 'none';      
+        menu.children[0].children[1].style.display = 'inline-block';
       } else {
         ul.style.display = '';
-      }      
+        menu.children[0].children[0].style.display = '';      
+        menu.children[0].children[1].style.display = '';
+      }
     });
     addEvent(ul, 'click', function (event) {
       let target = event.target;
