@@ -1,5 +1,5 @@
 (function () {
-  'use strict'
+  'use strict';
 
   const DB_NAME = 'todoit-indexedDB';
   const DB_VERSION = 1;
@@ -83,7 +83,7 @@
       } else {
         console.log('not found');
       }
-    }
+    };
   }
 
   
