@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "webpack-serve  --progress --colors --port 8014 --host 192.168.1.104 -d"
+    "server": "webpack-serve --open"
   },
   "repository": {
     "type": "git",
@@ -18,8 +18,10 @@
   },
   "homepage": "https://github.com/Hinger36/todoit#readme",
   "devDependencies": {
-    "webpack-serve": "^1.0.2",
+    "eslint": "^4.19.1",
+    "eslint-plugin-html": "^4.0.3",
     "webpack": "^4.8.1",
-    "webpack-cli": "^2.1.3"
+    "webpack-cli": "^2.1.3",
+    "webpack-serve": "^1.0.2"
   }
 }
