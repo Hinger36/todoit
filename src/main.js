@@ -11,7 +11,7 @@
     getItem();
     initDb();
     listMenu();
-    
+    weeks();
   }
   
   //事件监听 兼容性封装
@@ -96,16 +96,18 @@
     }
     if (tags === '今天') {
       obj = todolist;
+      createDom(list[1], dayList().day1);
     } else {
       obj  = tagList();
+      createDom(list[1], obj);
     }
     console.log(obj)
     todolist.sort(function (a, b) {
       return a.status - b.status;
     });   
     
-    createDom(list[0], obj);
-    createDom(list[1], dayList().day1);
+    createDom(list[0], todolist);
+    
     createDom(list[2], dayList().day1); 
     createDom(list[3], dayList().day2);
     createDom(list[4], dayList().day3);
@@ -283,6 +285,18 @@
             });                  
           }
           if (i === 1 || i === 2) {
+            if (i === 1) {
+              if (tags !== '今天') {
+                let id = tagList()[index].id;
+                todolist.forEach(function (ele) {
+                  if (ele.id === id) {
+                    deleteDB(ele.id);
+                    todolist = []; 
+                    getAllDB();
+                  }
+                });                  
+              } 
+            }
             let id = dayList().day1[index].id;
             todolist.forEach(function (ele) {
               if (ele.id === id) {
@@ -554,7 +568,12 @@
     });
     return taglist;
   }     
-  
+  function weeks() {
+    let week = document.getElementsByClassName('week');
+    for (let i = 2; i < week.length; i++) {
+      week[i].children[0].children[0].innerHTML = getNowTime(i).week;
+    }
+  }
   init();
 
 })();
