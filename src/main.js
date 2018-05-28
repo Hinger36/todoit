@@ -6,6 +6,9 @@
 
   function init() {
     let time = document.getElementsByClassName('time');
+    for (let i = 1, len = time.length; i < len; i++) {
+      time[i].innerHTML = getNowTime(i - 1).week + getNowTime(i - 1).month;     
+    }
     time[0].innerHTML = getNowTime().week + getNowTime().month;
     additem();
     getItem();
@@ -83,6 +86,7 @@
       list[0].innerHTML = '';
       let div = document.createElement('div');
       let li = document.createElement('li');
+      li.style.border = 'none';
       let box = list[0].appendChild(li);
       box.appendChild(div).innerHTML = '<div></div><div>你的任务完成了！#TodolistZero</div>';
     }
@@ -90,8 +94,8 @@
       list[1].innerHTML = '';
       let div1 = document.createElement('div');
       let li1 = document.createElement('li');
+      li1.style.border = 'none';
       let box1 = list[1].appendChild(li1);
-      console.log(list[1])
       box1.appendChild(div1).innerHTML = '<div></div><div>你的任务完成了！#TodolistZero</div>';
     }
     if (tags === '今天') {
@@ -101,7 +105,6 @@
       obj  = tagList();
       createDom(list[1], obj);
     }
-    console.log(obj)
     todolist.sort(function (a, b) {
       return a.status - b.status;
     });   
@@ -551,18 +554,36 @@
     addEvent(box, 'click', function () {
       lmenu.style.display = '';
     });
+    // for (let i = 0, len = filter.length; i < len; i++) {
+    //   content[1].style.backgroundColor = '#fafafa';
+    // }
     addEvent(filter[0], 'click', function () {
+      for (let i = 0, len = filter.length; i < len; i++) {
+        filter[i].style.backgroundColor = '#fafafa';
+      }
       content[0].style.display = 'block';
+      filter[0].style.backgroundColor = '#fff';
       content[1].style.display = 'none';
       content[2].style.display = '';
     });
     addEvent(filter[1], 'click', function () {
-      window.location.reload();
+      for (let i = 0, len = filter.length; i < len; i++) {
+        filter[i].style.backgroundColor = '#fafafa';
+      }
+      // window.location.reload();
+      content[0].style.display = '';
+      content[1].style.display = 'block';
+      filter[1].style.backgroundColor = '#fff';
+      content[2].style.display = '';
     });
     addEvent(filter[2], 'click', function () {
+      for (let i = 0, len = filter.length; i < len; i++) {
+        filter[i].style.backgroundColor = '#fafafa';
+      }
       content[0].style.display = '';
       content[1].style.display = 'none';
       content[2].style.display = 'block';
+      filter[2].style.backgroundColor = '#fff';
     });
   }
 
