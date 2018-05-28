@@ -180,15 +180,22 @@
         //兼容性处理
         e = e || event;
         let target = e.target || e.srcElement;
+        if (!target) {
+          return;
+        }
         (function getNode(target) {
-          if (target.nodeName === 'P') {
-            markItem();
-          } else if (target.nodeName !== 'LI'){
+          if (!target || target.nodeName === 'EM') {
+            return;
+          } else if (target.nodeName === 'P') {
+            markItem(target);
+          } else if (target.nodeName === 'LI'){
+            getNode(target.children[0]);
+          } else {
             getNode(target.parentNode);
           }
           return;  
         })(target);
-        function markItem() {
+        function markItem(target) {
           let liItem = target.parentNode;
           let index = Array.prototype.indexOf.call(liItem.parentNode.children, liItem);
           if (i === 0) {
@@ -276,6 +283,7 @@
         if (target.nodeName === 'EM') {
           //删除一条待办事项
           let liItem = target.parentNode;
+          // console.log(liItem)
           let index = Array.prototype.indexOf.call(liItem.parentNode.children, liItem);
           if (i === 0) {
             let id = todolist[index].id;
