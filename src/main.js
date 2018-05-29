@@ -525,17 +525,25 @@
     let box = document.getElementsByClassName('right-box')[0];
     let filter = document.getElementsByClassName('filter');
     let content = document.getElementsByClassName('content');
+
+    let isHiden = true;
+    let isShow = true;
+		let timer = 0;
     addEvent(menu, 'click', function (event) {
       event.stopPropagation();
-      if (!ul.style.display) {
-        ul.style.display = 'none';
-        menu.children[0].children[0].style.display = 'none';      
-        menu.children[0].children[1].style.display = 'inline-block';
+      if (isShow) {
+        // ul.style.display = 'none';
+        ul.style.top = '-180px';
+				ul.style.transition = '0.6s';
+        menu.children[0].children[0].style.transform = 'rotate(180deg)';
+        menu.children[0].children[0].style.transition = '0.6s';    
       } else {
-        ul.style.display = '';
-        menu.children[0].children[0].style.display = '';      
-        menu.children[0].children[1].style.display = '';
+        ul.style.top = '';
+        ul.style.transition = '0.6s';
+        menu.children[0].children[0].style.transform = '';
+        menu.children[0].children[0].style.transition = '0.6s';
       }
+      isShow = !isShow;
     });
     addEvent(ul, 'click', function (event) {
       let target = event.target;
@@ -553,18 +561,20 @@
       }    
     });
     addEvent(nav, 'click', function () {
-      if (!lmenu.style.display) {
-        lmenu.style.display = 'block';
-      } else {
-        lmenu.style.display = '';
-      }    
+			if (isHiden) {
+				lmenu.style.left = '0';
+				lmenu.style.transition = '0.6s'
+			} else {
+				lmenu.style.left = '';
+				lmenu.style.transition = '0.6s'
+			}
+			isHiden = !isHiden;
     });
     addEvent(box, 'click', function () {
-      lmenu.style.display = '';
+      lmenu.style.left = '';
+			lmenu.style.transition = '0.6s'
     });
-    // for (let i = 0, len = filter.length; i < len; i++) {
-    //   content[1].style.backgroundColor = '#fafafa';
-    // }
+   
     addEvent(filter[0], 'click', function () {
       for (let i = 0, len = filter.length; i < len; i++) {
         filter[i].style.backgroundColor = '#fafafa';
@@ -578,7 +588,6 @@
       for (let i = 0, len = filter.length; i < len; i++) {
         filter[i].style.backgroundColor = '#fafafa';
       }
-      // window.location.reload();
       content[0].style.display = '';
       content[1].style.display = 'block';
       filter[1].style.backgroundColor = '#fff';
