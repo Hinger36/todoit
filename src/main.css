@@ -94,7 +94,6 @@ body {
 /* body */
 .main {
   background-color: #fafafa;
-  min-height: 100vh;
 }
 .main .inner {
   max-width: 950px;
@@ -211,10 +210,13 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 .content {
-  padding-top: 70px;
+  padding-top: 60px;
   background-color: #fff;
   max-width: 700px;
   margin-left: 250px;
+}
+.week {
+  margin: 10px 0 40px; 
 }
 .week .tag span {
   font-size: 0.9rem;

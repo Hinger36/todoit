@@ -81,37 +81,31 @@
         </div>
       </div>
       <div class="right-box clearfix">
-          <div class="content hide">
-            <div class="tag">
-              <span>收件箱</span>
-            </div>
-    
-            <div class="text-box">
-                <input type="text" name="todoitem" id="add-list" class="in-edit" placeholder="例如：每天跑步">
-                <button class="btn">添加任务</button>
-            </div>
-            <div class="lists">
-              <ul class="todolist">
-             
-              </ul>
-            </div>
+        <div class="content hide">
+          <div class="tag">
+            <span>收件箱</span>
           </div>
-
+  
+          <div class="text-box">
+              <input type="text" name="todoitem" id="add-list" class="in-edit" placeholder="例如：每天跑步">
+              <button class="btn">添加任务</button>
+          </div>
+          <div class="lists">
+            <ul class="todolist" id="inbox"></ul>
+          </div>
+        </div>
         <div class="content">
           <div class="tag">
             <span>今天</span>
             <span class="time"></span>
           </div>
-  
           <div class="text-box">
               <!-- <label for="add-list">edit</label> -->
               <input type="text" name="todoitem" id="add-list" class="in-edit" placeholder="例如：每天跑步">
               <button class="btn">添加任务</button>
           </div>
           <div class="lists">
-            <ul class="todolist">
-              
-            </ul>
+            <ul class="todolist" id="today"></ul>
           </div>
         </div>
 
@@ -223,14 +217,25 @@
           </div>
 
         </div>
+        <div class="content hide">
+          <div class="tag">
+            <span>项目</span>
+          </div>
+  
+          <div class="text-box">
+              <input type="text" name="todoitem" id="add-list" class="in-edit" placeholder="例如：每天跑步">
+              <button class="btn">添加任务</button>
+          </div>
+          <div class="lists">
+            <ul class="todolist" id="pro-tag"></ul>
+          </div>
+        </div>
       </div>
       
       
     </div>
   </div>
   <script src="./src/iconfont.js"></script>
-  <script src="./src/main.js"></script>
-  <!-- <script src="./src/indexDB.js"></script> -->
-
+  <script src="./dist/bundle.js"></script>
 </body>
 </html>
