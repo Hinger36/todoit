@@ -116,7 +116,7 @@ __webpack_require__.r(__webpack_exports__);
 //数据库名称
 const DB_NAME = 'todoit-indexedDB';
 //数据库版本号
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 //对象仓库名称
 const DB_STORE_NAME = 'todolist';
 const KEYPATH = 'tick';
@@ -157,7 +157,11 @@ function initDB(data, callback) {
   };
   openReq.onupgradeneeded = event => {
     db = event.target.result;
+    if (event.oldVersion) {
+      db.deleteObjectStore(DB_STORE_NAME);
+    }
     _createObjectStoreHandle();
+
     console.log('创建对象仓库成功');
   };
   openReq.onblocked = () => {
