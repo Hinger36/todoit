@@ -9,12 +9,12 @@
 PC端：
 ![实例](README_IMG/3.png)
 
-![实例](README_IMG/5.png)
+![实例](README_IMG/2.gif)
 
 移动响应式设计：
 ![移动端](README_IMG/2.png)
 
-![移动端](README_IMG/4.png)
+![移动端](README_IMG/2-1.gif)
 
 
 
