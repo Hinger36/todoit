@@ -114,19 +114,26 @@ function showList() {
   _sort();
   let todayList = todolist.filter(ele => ele.time === getNowTime().month);
   clearList();
+  //如果收信箱TODO列表为空
   if (!todolist.length) {
+    //创建首页图片
     _indexImg(inbox);
   }
+  //如果今天TODO列表为空
   if (!todayList.length) {
     _indexImg(today);
   }
+  //创建列表
   _createList(inbox, todolist);
   _createList(today, todayList);
+
   for (let i = 0, len = weeks.length; i < len; i++) {
     let week = weeks[i].children[2].children[0];
     let weekList = todolist.filter(ele => ele.time === getNowTime(i).month);
+    //创建未来7天的TODO列表
     _createList(week, weekList);
   }
+  //创建标签列表
   _createList(proTag, _tagList());
 }
 //创建数据列表
@@ -141,6 +148,7 @@ function _createList(list, obj) {
     item.appendChild(em);
     //完成任务
     if (ele.status) {
+      //完成的任务添加删除线
       p.style.textDecoration = 'line-through';
       p.children[0].style.background = 'url(./images/success.png) no-repeat';
     }
@@ -178,6 +186,7 @@ function listHandle() {
     if (target.nodeName === 'EM') {
       _deleteItem(todolist, target);
     }
+    //点击某条任务，代表完成
     if (target.nodeName === 'P') {
       _getTask(todolist, target);
     }
@@ -185,17 +194,20 @@ function listHandle() {
   addEvent(today, 'click', event => {
     let target = event.target || event.srcElement;
     let todayList = todolist.filter(ele => ele.time === getNowTime().month);
+    //删除任务
     if (target.nodeName === 'EM') {
       _deleteItem(todayList, target)
     }
+    //完成任务
     if (target.nodeName === 'P') {
       _getTask(todayList, target);
     }
   });
-
+  
   for (let i = 0, len = weeks.length; i < len; i++) {
     addEvent(ul[i + 2], 'click', event => {
       let target = event.target || event.srcElement;
+      //未来7天中某一天的todo列表
       let weekList = todolist.filter(ele => ele.time === getNowTime(i).month);
       if (target.nodeName === 'EM') {
         _deleteItem(weekList, target)
