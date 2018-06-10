@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="./src/reset.css">
-  <link rel="stylesheet" href="./src/main.css">
+  <link rel="stylesheet" href="./src/css/reset.css">
+  <link rel="stylesheet" href="./src/css/main.css">
   <title>Todoit</title>
 </head>
 <body>
@@ -64,12 +64,12 @@
                 </svg>
               </span>
               <span class="menu-text">
-                <span>项目</span>
+                <span>标签</span>
                 
               </span>
             </li>
             <li class = "pro">
-              <ul class="project-list">
+              <ul class="project-list" id="tag-list">
                 <li class="pro-item"><span></span>个人</li>
                 <li class="pro-item"><span></span>工作</li>
                 <li class="pro-item"><span></span>购物</li>
@@ -81,7 +81,7 @@
         </div>
       </div>
       <div class="right-box clearfix">
-        <div class="content hide">
+        <div class="content hide" id="con-inbox">
           <div class="tag">
             <span>收件箱</span>
           </div>
@@ -94,7 +94,7 @@
             <ul class="todolist" id="inbox"></ul>
           </div>
         </div>
-        <div class="content">
+        <div class="content" id="con-today">
           <div class="tag">
             <span>今天</span>
             <span class="time"></span>
@@ -109,7 +109,7 @@
           </div>
         </div>
 
-        <div class="content hide">
+        <div class="content hide" id="con-week">
           <div class="week"> 
             <div class="tag">
               <span>今天</span>
@@ -217,7 +217,7 @@
           </div>
 
         </div>
-        <div class="content hide">
+        <div class="content hide" id="con-tag">
           <div class="tag">
             <span>项目</span>
           </div>

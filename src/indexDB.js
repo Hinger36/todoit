@@ -1,3 +1,5 @@
+
+
 //数据库名称
 const DB_NAME = 'todoit-indexedDB';
 //数据库版本号
@@ -67,7 +69,7 @@ function _createIndex(store, index) {
 function _createTransation() {
   const transaction = db.transaction(DB_STORE_NAME, 'readwrite');
   transaction.oncomplete = () => {
-    console.log('事务完成');
+    // console.log('事务完成');
   }
   transaction.onerror = () => {
     console.log('事务出错');
@@ -87,7 +89,7 @@ function addDB(obj, callback) {
     store.put(obj[i])
   		  .onsuccess = () => {
           callback();
-          console.log('添加成功');
+          // console.log('添加成功');
         }
     }
 } 
@@ -96,7 +98,7 @@ function deleteDB(keyPath, callback) {
   let store = _createTransation().objectStore(DB_STORE_NAME);
   store.delete(keyPath)
       .onsuccess = () => {
-        console.log('删除成功');
+        // console.log('删除成功');
         callback();
       }
 }

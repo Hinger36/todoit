@@ -1,13 +1,15 @@
 import DBbase from './indexDB';
 import api from './api';
-// import inter from './interactive'
+import inter from './interactive'
 
+//事件封装函数
 const addEvent = api.addEvent;
+//随机数ID
 const ID = api.ID;
 let todolist = [];
-let tags = '';
+let tags = inter.tags;
 
-!function init() {
+(function init() {
   let time = document.getElementsByClassName('time');
   for (let i = 1, len = time.length; i < len; i++) {
     time[i].innerHTML = getNowTime(i - 1).week + getNowTime(i - 1).month;     
@@ -16,10 +18,15 @@ let tags = '';
   //DBbase.deleteIndexDB()
   DBbase.initDB(todolist, showList);
   addTodo();
-  listMenu();
   weeks();
   listHandle();
-}()
+
+  //交互部分
+  inter.tagMenu(showList);
+  inter.leftMenu();
+  inter.menuBtn();
+  
+})();
   
 
 //添加待办事项
@@ -75,13 +82,14 @@ function addTodo(item) {
       if (!input.value) {
         return;
       }
-      _addItem(input.value, null, tags);
+      _addItem(input.value, null, tags.tag);
       input.value = '';
     } else {
       return;
     }   
   });
 }
+
 //添加一条任务
 function _addItem(task, day, tag) {
    let todoitem = {
@@ -145,6 +153,7 @@ function clearList() {
     list[i].innerHTML = '';
   }
 }
+
 /**
  * 创建首页图片
  * @param {todolist列表dom元素} list 
@@ -165,6 +174,7 @@ function listHandle() {
   let proTag = document.getElementById('pro-tag');
   addEvent(inbox, 'click', event => {
     let target = event.target || event.srcElement;
+    //删除点击的那条任务
     if (target.nodeName === 'EM') {
       _deleteItem(todolist, target);
     }
@@ -239,52 +249,51 @@ function _sort() {
 }
   
   
-  function getNowTime(addDay) {
-    addDay = (addDay || 0);
-    let foo = new Date();
-    foo.setDate(foo.getDate() + addDay); 
-    let month = foo.getMonth() + 1 + '月';
-    let day = foo.getDate() + '日';
-    let hours = foo.getHours();
-    let minutes = foo.getMinutes();
-    let week = foo.getDay();
-    let time = {};
-    switch(week) {
-    case 0:
-      week = '星期日';
-      break;
-    case 1:
-      week = '星期一';
-      break;
-    case 2:
-      week = '星期二';
-      break;
-    case 3:
-      week = '星期三';
-      break;
-    case 4:
-      week = '星期四';
-      break;
-    case 5:
-      week = '星期五';
-      break;
-    case 6:
-      week = '星期六';
-      break;
-    default: 
-      console.log('error');
-    }
-    return time = {
-      month: month + day,
-      hours: hours + ':' + minutes,
-      week: week,
-    };
+function getNowTime(addDay) {
+  addDay = (addDay || 0);
+  let foo = new Date();
+  foo.setDate(foo.getDate() + addDay); 
+  let month = foo.getMonth() + 1 + '月';
+  let day = foo.getDate() + '日';
+  let hours = foo.getHours();
+  let minutes = foo.getMinutes();
+  let week = foo.getDay();
+  let time = {};
+  switch(week) {
+  case 0:
+    week = '星期日';
+    break;
+  case 1:
+    week = '星期一';
+    break;
+  case 2:
+    week = '星期二';
+    break;
+  case 3:
+    week = '星期三';
+    break;
+  case 4:
+    week = '星期四';
+    break;
+  case 5:
+    week = '星期五';
+    break;
+  case 6:
+    week = '星期六';
+    break;
+  default: 
+    console.log('error');
   }
+  return time = {
+    month: month + day,
+    hours: hours + ':' + minutes,
+    week: week,
+  };
+}
  
-
 function _tagList() {        
   let taglist = todolist.filter(function (ele) {
-    return ele.tag === tags;
+    return ele.tag === tags.tag;
   });
   return taglist;
 }     
@@ -293,94 +302,4 @@ function weeks() {
   for (let i = 2; i < week.length; i++) {
     week[i].children[0].children[0].innerHTML = getNowTime(i).week;
   }
-}
- 
-function listMenu() {
-
-  let ul = document.getElementsByClassName('project-list')[0];
-  let menu = document.getElementsByClassName('fixmenu')[0];
-  let tag = document.getElementsByClassName('tag')[9].children[0];
-  let nav = document.getElementsByClassName('nav-toggle')[0];
-  let lmenu = document.getElementsByClassName('left-menu')[0];
-  let box = document.getElementsByClassName('right-box')[0];
-  let filter = document.getElementsByClassName('filter');
-  let content = document.getElementsByClassName('content');
-  let isHiden = true;
-  let isShow = true;
-  let timer = 0;
-  addEvent(menu, 'click', function (event) {
-    event.stopPropagation();
-    if (isShow) {
-      // ul.style.display = 'none';
-      ul.style.top = '-180px';
-      ul.style.transition = '0.6s';
-      menu.children[0].children[0].style.transform = 'rotate(180deg)';
-      menu.children[0].children[0].style.transition = '0.6s';    
-    } else {
-      ul.style.top = '';
-      ul.style.transition = '0.6s';
-      menu.children[0].children[0].style.transform = '';
-      menu.children[0].children[0].style.transition = '0.6s';
-    }
-    isShow = !isShow;
-  });
-  addEvent(ul, 'click', function (event) {
-    let target = event.target;
-    if (target.nodeName === 'LI') {
-      
-      content[0].style.display = '';
-      content[1].style.display = 'none';
-      content[2].style.display = '';
-      content[3].style.display = 'block';
-      
-      tag.innerHTML = target.innerText;
-      tags = tag.innerHTML; 
-      showList();
-    }    
-  });
-  addEvent(nav, 'click', function () {
-    if (isHiden) {
-      lmenu.style.left = '0';
-      lmenu.style.transition = '0.6s'
-    } else {
-      lmenu.style.left = '';
-      lmenu.style.transition = '0.6s'
-    }
-    isHiden = !isHiden;
-  });
-  addEvent(box, 'click', function () {
-    lmenu.style.left = '';
-    lmenu.style.transition = '0.6s'
-  });
-  
-  addEvent(filter[0], 'click', function () {
-    for (let i = 0, len = filter.length; i < len; i++) {
-      filter[i].style.backgroundColor = '#fafafa';
-    }
-    content[0].style.display = 'block';
-    filter[0].style.backgroundColor = '#fff';
-    content[1].style.display = 'none';
-    content[2].style.display = '';
-    content[3].style.display = '';
-  });
-  addEvent(filter[1], 'click', function () {
-    for (let i = 0, len = filter.length; i < len; i++) {
-      filter[i].style.backgroundColor = '#fafafa';
-    }
-    content[0].style.display = '';
-    content[1].style.display = 'block';
-    filter[1].style.backgroundColor = '#fff';
-    content[2].style.display = '';
-    content[3].style.display = '';
-  });
-  addEvent(filter[2], 'click', function () {
-    for (let i = 0, len = filter.length; i < len; i++) {
-      filter[i].style.backgroundColor = '#fafafa';
-    }
-    content[0].style.display = '';
-    content[1].style.display = 'none';
-    content[2].style.display = 'block';
-    content[3].style.display = '';
-    filter[2].style.backgroundColor = '#fff';
-  });
 }

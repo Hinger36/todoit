@@ -33,7 +33,7 @@ body {
   display: inline-block;
   width: 50px;
   height: 40px;
-  background: url(../images/logs.png) no-repeat;
+  background: url(../../images/logs.png) no-repeat;
   background-size: 35px;
   background-position-y: 3px;
   margin-left: 35px;
@@ -129,9 +129,9 @@ body {
 .filter:nth-of-type(2) {
   background-color: #fff;
 }
-.filter:hover {
+/* .filter:hover {
   background-color: #fff;
-}
+} */
 .fixmenu:hover {
   background-color: #eee;
 }
@@ -216,14 +216,11 @@ body {
   margin-left: 250px;
 }
 .week {
-  margin: 10px 0 40px; 
+  margin: 0 0 40px; 
 }
 .week .tag span {
   font-size: 0.9rem;
   font-weight: bold;
-}
-.week .tag {
-  margin-top: 20px;
 }
 .tag {
   color: #333;
@@ -282,7 +279,7 @@ body {
   display: inline-block;
   width: 30px;
   height: 30px;
-  background: url(../images/webwxgetmsgimg.png) no-repeat;
+  background: url(../../images/webwxgetmsgimg.png) no-repeat;
   background-size: 100% !important; 
   vertical-align: middle;
   margin: 5px;
@@ -307,7 +304,7 @@ body {
   padding-bottom: 32px;
   margin: 5px 0;
   right: -10px;
-  background: url(../images/delete.png) no-repeat;
+  background: url(../../images/delete.png) no-repeat;
   background-size: 100%;
 }
 .todolist>li>div{
@@ -317,7 +314,7 @@ body {
 
 .todolist>li>div>div:nth-of-type(1) {
   display: inline-block;
-  background: url('../images/736b25b3212facd336d9bc0fd047c07e.png');
+  background: url('../../images/736b25b3212facd336d9bc0fd047c07e.png');
   height: 180px;
   width: 250px;
   margin-top: 50px;
