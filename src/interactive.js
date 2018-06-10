@@ -7,7 +7,6 @@ const addEvent = api.addEvent;
 let tags = {tag: ''};
 let content = document.querySelectorAll('.right-box .content');
 
-
 //标签列表部分
 function tagMenu(callback) {
   let ul = document.querySelector('#tag-list');

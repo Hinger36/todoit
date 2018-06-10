@@ -1,6 +1,7 @@
 import DBbase from './indexDB';
 import api from './api';
 import inter from './interactive'
+import load from './preload'
 
 //事件封装函数
 const addEvent = api.addEvent;
@@ -8,6 +9,12 @@ const addEvent = api.addEvent;
 const ID = api.ID;
 let todolist = [];
 let tags = inter.tags;
+let images = [
+  './images/736b25b3212facd336d9bc0fd047c07e.png',
+  './images/delete.png',
+  './images/success.png',
+  './images/webwxgetmsgimg.png'
+];
 
 (function init() {
   let time = document.getElementsByClassName('time');
@@ -20,6 +27,9 @@ let tags = inter.tags;
   addTodo();
   weeks();
   listHandle();
+  load(images,function(e) {
+    console.log(e)
+  });
 
   //交互部分
   inter.tagMenu(showList);
@@ -203,7 +213,7 @@ function listHandle() {
       _getTask(todayList, target);
     }
   });
-  
+
   for (let i = 0, len = weeks.length; i < len; i++) {
     addEvent(ul[i + 2], 'click', event => {
       let target = event.target || event.srcElement;

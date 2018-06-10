@@ -261,13 +261,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./api */ "./src/api.js");
 
 
+/**
+ * 页面交互模块
+ */
 const addEvent = _api__WEBPACK_IMPORTED_MODULE_0__["default"].addEvent;
 let tags = { tag: '' };
 let content = document.querySelectorAll('.right-box .content');
-
-// tagMenu(showList);
-// leftMenu();
-// menuBtn();
 
 //标签列表部分
 function tagMenu(callback) {
@@ -302,12 +301,12 @@ function tagMenu(callback) {
         _swapHandle(content, conTag);
         tag.innerHTML = '<span>' + target.innerText + '</span>';
         tags.tag = tag.textContent;
-        console.log(tags);
         callback();
       }
     });
   }
 };
+
 //移动端响应式菜单开关
 function leftMenu() {
   //切换菜单按钮
@@ -334,6 +333,7 @@ function leftMenu() {
   });
 }
 
+//切换功能，今天、未来7天、收信箱
 function menuBtn() {
   let filter = document.querySelectorAll('#top-filters .filter');
   for (let i = 0, len = filter.length; i < len - 1; i++) {
@@ -363,6 +363,7 @@ function _swapHandle(elements, target) {
   }
   _css(target, { display: 'block' });
 }
+
 /**
  * 改变元素的style属性
  * 调用方式:_css($el, {"font-size": ..., "background": ...}；
@@ -404,6 +405,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _indexDB__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./indexDB */ "./src/indexDB.js");
 /* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./api */ "./src/api.js");
 /* harmony import */ var _interactive__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./interactive */ "./src/interactive.js");
+/* harmony import */ var _preload__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./preload */ "./src/preload.js");
+
 
 
 
@@ -414,6 +417,7 @@ const addEvent = _api__WEBPACK_IMPORTED_MODULE_1__["default"].addEvent;
 const ID = _api__WEBPACK_IMPORTED_MODULE_1__["default"].ID;
 let todolist = [];
 let tags = _interactive__WEBPACK_IMPORTED_MODULE_2__["default"].tags;
+let images = ['./images/736b25b3212facd336d9bc0fd047c07e.png', './images/delete.png', './images/success.png', './images/webwxgetmsgimg.png'];
 
 (function init() {
   let time = document.getElementsByClassName('time');
@@ -426,10 +430,14 @@ let tags = _interactive__WEBPACK_IMPORTED_MODULE_2__["default"].tags;
   addTodo();
   weeks();
   listHandle();
+  Object(_preload__WEBPACK_IMPORTED_MODULE_3__["default"])(images, function (e) {
+    console.log(e);
+  });
+
+  //交互部分
   _interactive__WEBPACK_IMPORTED_MODULE_2__["default"].tagMenu(showList);
   _interactive__WEBPACK_IMPORTED_MODULE_2__["default"].leftMenu();
   _interactive__WEBPACK_IMPORTED_MODULE_2__["default"].menuBtn();
-  console.log(tags);
 })();
 
 //添加待办事项
@@ -517,19 +525,26 @@ function showList() {
   _sort();
   let todayList = todolist.filter(ele => ele.time === getNowTime().month);
   clearList();
+  //如果收信箱TODO列表为空
   if (!todolist.length) {
+    //创建首页图片
     _indexImg(inbox);
   }
+  //如果今天TODO列表为空
   if (!todayList.length) {
     _indexImg(today);
   }
+  //创建列表
   _createList(inbox, todolist);
   _createList(today, todayList);
+
   for (let i = 0, len = weeks.length; i < len; i++) {
     let week = weeks[i].children[2].children[0];
     let weekList = todolist.filter(ele => ele.time === getNowTime(i).month);
+    //创建未来7天的TODO列表
     _createList(week, weekList);
   }
+  //创建标签列表
   _createList(proTag, _tagList());
 }
 //创建数据列表
@@ -544,6 +559,7 @@ function _createList(list, obj) {
     item.appendChild(em);
     //完成任务
     if (ele.status) {
+      //完成的任务添加删除线
       p.style.textDecoration = 'line-through';
       p.children[0].style.background = 'url(./images/success.png) no-repeat';
     }
@@ -581,6 +597,7 @@ function listHandle() {
     if (target.nodeName === 'EM') {
       _deleteItem(todolist, target);
     }
+    //点击某条任务，代表完成
     if (target.nodeName === 'P') {
       _getTask(todolist, target);
     }
@@ -588,9 +605,11 @@ function listHandle() {
   addEvent(today, 'click', event => {
     let target = event.target || event.srcElement;
     let todayList = todolist.filter(ele => ele.time === getNowTime().month);
+    //删除任务
     if (target.nodeName === 'EM') {
       _deleteItem(todayList, target);
     }
+    //完成任务
     if (target.nodeName === 'P') {
       _getTask(todayList, target);
     }
@@ -599,6 +618,7 @@ function listHandle() {
   for (let i = 0, len = weeks.length; i < len; i++) {
     addEvent(ul[i + 2], 'click', event => {
       let target = event.target || event.srcElement;
+      //未来7天中某一天的todo列表
       let weekList = todolist.filter(ele => ele.time === getNowTime(i).month);
       if (target.nodeName === 'EM') {
         _deleteItem(weekList, target);
@@ -706,129 +726,83 @@ function weeks() {
   }
 }
 
+/***/ }),
+
+/***/ "./src/preload.js":
+/*!************************!*\
+  !*** ./src/preload.js ***!
+  \************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 /**
- * 页面交互模块
+ * 图片预加载函数
+ * @param {图片数组或对象} images 
+ * @param {全部图片加载成功的回调函数} callback 
+ * @param {加载超时的时间} timeout 
  */
-// function listMenu() {
-//   let content = document.querySelectorAll('.right-box .content');
+function preload(images, callback, timeout) {
+  //加载完成的图片计数器
+  let count = 0;
+  //全部图片加载完成
+  let success = true;
+  //是否加载超时
+  let isTimeout = false;
+  //超时定时器ID
+  let timeId = 0;
 
-//   tagMenu(showList);
-//   leftMenu();
-//   menuBtn();
+  for (let key in images) {
+    //过滤掉继承的属性
+    if (!images.hasOwnProperty(key)) {
+      continue;
+    }
+    let item = images[key];
+    if (typeof item === 'string') {
+      item = { src: item };
+    } else {
+      continue;
+    }
+    count++;
+    //设置图片元素的img，是一个Image对象
+    item.image = new Image();
+    doload(item);
+  }
+  if (timeout) {
+    timeId = setTimeout(onTimeout, timeout);
+  }
+  function doload(item) {
+    item.status = 'loading';
 
-//   //标签列表部分
-//   function tagMenu(callback) {
-//     let ul = document.querySelector('#tag-list');
-//     //标签栏
-//     let menu = document.querySelector('.fixmenu');
-//     //展开缩回icon箭头
-//     let icon = menu.querySelector('.icon');
-//     //是否显示标签页
-//     let isShow = true;
-//     addEvent(menu, 'click', function () {
-//       if (isShow) {
-//         //展开标签列表
-//         _css(ul, {top: '-180px', transition: '0.6s'});
-//         //箭头旋转
-//         _css(icon, {transform: 'rotate(180deg)', transition: '0.6s'});
-//       } else {
-//         //隐藏列表
-//         _css(ul, {top: '', transition: '0.6s'});
-//         _css(icon, {transform: '', transition: '0.6s'});
-//       }
-//       isShow = !isShow;
-//     });
-//     _clickTag(callback);
-//     //点击标签
-//     function _clickTag(callback) {
-//       let conTag = document.querySelector('#con-tag');
-//       let tag = conTag.querySelector('.tag');
-//       addEvent(ul, 'click', function (event) {
-//         let target = event.target || event.srcElement;
-//         if (target.nodeName === 'LI') {
-//           _swapHandle(content, conTag);
-//           tag.innerHTML = '<span>' + target.innerText + '</span>';
-//           tags = tag.textContent;
-//           callback();
-//         }    
-//       });
-//     }
-//   };
-//   //移动端响应式菜单开关
-//   function leftMenu() {
-//     //切换菜单按钮
-//     let nav = document.querySelector('.nav-toggle');
-//     //左侧菜单栏
-//     let lmenu = document.querySelector('.left-menu');
-//     //右侧内容部分
-//     let box = document.querySelector('.right-box');
-//     //菜单是否隐藏
-//     let isHiden = true;
-//     addEvent(nav, 'click', function () {
-//       if (isHiden) {
-//         //点击展开菜单
-//         _css(lmenu, {left: '0', transition: '0.6s'});
-//       } else {
-//         //点击隐藏菜单
-//         _css(lmenu, {left: '', transition: '0.6s'});
-//       }
-//       isHiden = !isHiden;
-//     });
-//     //点击非菜单部分，隐藏菜单
-//     addEvent(box, 'click', function () {
-//       _css(lmenu, {left: '', transition: '0.6s'});
-//     });
-//   }
+    item.image.onload = function () {
+      item.status = 'loaded';
+      success = success && true;
+      cleanEvent();
+    };
+    item.image.onerror = function () {
+      item.status = 'error';
+      success = false;
+      cleanEvent();
+    };
+    item.image.src = item.src;
+    //清除绑定的事件
+    function cleanEvent() {
+      item.image.onload = item.image.onerror = null;
 
-//   function menuBtn() {
-//     let filter = document.querySelectorAll('#top-filters .filter');
-//     for(let i = 0, len = filter.length; i < len - 1; i++) {
-//       addEvent(filter[i], 'click', function () {
-//         _swapHandle(content, content[i]);
-//         for (let i = 0, len = filter.length; i < len - 1; i++) {
-//           _css(filter[i], {backgroundColor: '#fafafa'});
-//         }
-//         _css(filter[i], {backgroundColor: '#fff'});
-//       });
-//     }  
-//   }
-
-// }
-// /**
-//  * 显示元素列表中的目标元素，隐藏列表中非目标元素
-//  * @param {元素列表} elements 
-//  * @param {目标元素} target 
-//  */
-// function _swapHandle(elements, target) {
-//   //遍历元素列表
-//   for (let i in elements) {
-//     //过滤掉原型上的属性
-//     if (!elements.hasOwnProperty(i)) {
-//       continue;
-//     }
-//     _css(elements[i], {display: 'none'});
-//   }
-//   _css(target, {display: 'block'});
-// }
-// /**
-//  * 改变元素的style属性
-//  * 调用方式:_css($el, {"font-size": ..., "background": ...}；
-//  * @param {dom对象} element
-//  * @param {样式对象} styles 
-//  */
-// function _css(element, styles) {
-//   for (let i in styles) {
-//     element.style[i] = styles[i];
-//   }
-// }
-
-// function _getNode(node) {
-//   if(node.nodeName === 'LI') {
-//     return node;
-//   } else {
-//     return _getNode(node.parentNode);
-//   }
-// }
+      if (! --count && !isTimeout) {
+        clearTimeout(timeId);
+        callback(true);
+      }
+    }
+  }
+  //超时函数  
+  function onTimeout() {
+    isTimeout = true;
+    callback(false);
+  }
+}
+/* harmony default export */ __webpack_exports__["default"] = (preload);
 
 /***/ })
 
