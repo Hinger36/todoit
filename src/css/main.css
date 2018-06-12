@@ -266,13 +266,13 @@ body {
 
 .todolist {
   max-width: 500px;
+  padding: 0 15px;
   margin: 0 auto;
 }
 .todolist li {
   position: relative;
   border-bottom: 1px solid #ccc;
   padding: 10px 0;
-  margin: 0 10px;
   cursor: pointer;
 }
 .todolist li p span {

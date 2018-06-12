@@ -17,16 +17,13 @@ let images = [
 ];
 
 (function init() {
-  let time = document.getElementsByClassName('time');
-  for (let i = 1, len = time.length; i < len; i++) {
-    time[i].innerHTML = getNowTime(i - 1).week + getNowTime(i - 1).month;     
-  }
-  time[0].innerHTML = getNowTime().week + getNowTime().month;
-  //DBbase.deleteIndexDB()
+  //初始化数据库
   DBbase.initDB(todolist, showList);
+
+  time();
   addTodo();
-  weeks();
   listHandle();
+  //预加载图片
   load(images,function(e) {
     console.log(e)
   });
@@ -37,7 +34,22 @@ let images = [
   inter.menuBtn();
   
 })();
-  
+
+//列表的时间
+function time() {
+  let today = document.querySelector('.time');
+  let weekDay = document.querySelectorAll('.week .tag');
+  //今天列表的时间
+  today.innerHTML = getNowTime().week + getNowTime().month;
+  //未来7天列表的时间
+  for (let i = 0, len = weekDay.length; i < len; i++) {
+    //render week time
+    weekDay[i].innerHTML = `
+      <span>${getNowTime(i).week}</span>
+      <span class="time">${getNowTime(i).month}</span>`;
+  }
+}
+
 
 //添加待办事项
 function addTodo(item) {
@@ -119,11 +131,11 @@ function _addItem(task, day, tag) {
 function showList() {
   let inbox = document.getElementById('inbox'); 
   let today = document.getElementById('today');
-  let weeks = document.getElementsByClassName('week');
+  let weeks = document.querySelectorAll('.week .todolist')
   let proTag = document.getElementById('pro-tag');
   _sort();
   let todayList = todolist.filter(ele => ele.time === getNowTime().month);
-  clearList();
+  _clearList();
   //如果收信箱TODO列表为空
   if (!todolist.length) {
     //创建首页图片
@@ -138,10 +150,9 @@ function showList() {
   _createList(today, todayList);
 
   for (let i = 0, len = weeks.length; i < len; i++) {
-    let week = weeks[i].children[2].children[0];
     let weekList = todolist.filter(ele => ele.time === getNowTime(i).month);
     //创建未来7天的TODO列表
-    _createList(week, weekList);
+    _createList(weeks[i], weekList);
   }
   //创建标签列表
   _createList(proTag, _tagList());
@@ -165,12 +176,13 @@ function _createList(list, obj) {
   });
 }
 //清空数据列表
-function clearList() {
+function _clearList() {
   let list = document.getElementsByClassName('todolist');
   for (let i = 0, len = list.length; i < len; i++) {
     list[i].innerHTML = '';
   }
 }
+
 
 /**
  * 创建首页图片
@@ -266,6 +278,7 @@ function _refresh() {
   todolist = [];
   DBbase.getAllDB(todolist, showList);
 }
+//列表排序 已完成的排后面
 function _sort() {
   todolist.sort((a, b) => a.status - b.status);
 }
@@ -312,16 +325,11 @@ function getNowTime(addDay) {
     week: week,
   };
 }
- 
+
+//标签列表
 function _tagList() {        
   let taglist = todolist.filter(function (ele) {
     return ele.tag === tags.tag;
   });
   return taglist;
 }     
-function weeks() {
-  let week = document.getElementsByClassName('week');
-  for (let i = 2; i < week.length; i++) {
-    week[i].children[0].children[0].innerHTML = getNowTime(i).week;
-  }
-}

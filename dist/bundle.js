@@ -376,13 +376,13 @@ function _css(element, styles) {
   }
 }
 
-function _getNode(node) {
-  if (node.nodeName === 'LI') {
-    return node;
-  } else {
-    return _getNode(node.parentNode);
-  }
-}
+// function _getNode(node) {
+//   if(node.nodeName === 'LI') {
+//     return node;
+//   } else {
+//     return _getNode(node.parentNode);
+//   }
+// }
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   tagMenu,
@@ -420,16 +420,13 @@ let tags = _interactive__WEBPACK_IMPORTED_MODULE_2__["default"].tags;
 let images = ['./images/736b25b3212facd336d9bc0fd047c07e.png', './images/delete.png', './images/success.png', './images/webwxgetmsgimg.png'];
 
 (function init() {
-  let time = document.getElementsByClassName('time');
-  for (let i = 1, len = time.length; i < len; i++) {
-    time[i].innerHTML = getNowTime(i - 1).week + getNowTime(i - 1).month;
-  }
-  time[0].innerHTML = getNowTime().week + getNowTime().month;
-  //DBbase.deleteIndexDB()
+  //初始化数据库
   _indexDB__WEBPACK_IMPORTED_MODULE_0__["default"].initDB(todolist, showList);
+
+  time();
   addTodo();
-  weeks();
   listHandle();
+  //预加载图片
   Object(_preload__WEBPACK_IMPORTED_MODULE_3__["default"])(images, function (e) {
     console.log(e);
   });
@@ -439,6 +436,21 @@ let images = ['./images/736b25b3212facd336d9bc0fd047c07e.png', './images/delete.
   _interactive__WEBPACK_IMPORTED_MODULE_2__["default"].leftMenu();
   _interactive__WEBPACK_IMPORTED_MODULE_2__["default"].menuBtn();
 })();
+
+//列表的时间
+function time() {
+  let today = document.querySelector('.time');
+  let weekDay = document.querySelectorAll('.week .tag');
+  //今天列表的时间
+  today.innerHTML = getNowTime().week + getNowTime().month;
+  //未来7天列表的时间
+  for (let i = 0, len = weekDay.length; i < len; i++) {
+    //render week time
+    weekDay[i].innerHTML = `
+      <span>${getNowTime(i).week}</span>
+      <span class="time">${getNowTime(i).month}</span>`;
+  }
+}
 
 //添加待办事项
 function addTodo(item) {
@@ -520,7 +532,7 @@ function _addItem(task, day, tag) {
 function showList() {
   let inbox = document.getElementById('inbox');
   let today = document.getElementById('today');
-  let weeks = document.getElementsByClassName('week');
+  let weeks = document.querySelectorAll('.week .todolist');
   let proTag = document.getElementById('pro-tag');
   _sort();
   let todayList = todolist.filter(ele => ele.time === getNowTime().month);
@@ -539,10 +551,9 @@ function showList() {
   _createList(today, todayList);
 
   for (let i = 0, len = weeks.length; i < len; i++) {
-    let week = weeks[i].children[2].children[0];
     let weekList = todolist.filter(ele => ele.time === getNowTime(i).month);
     //创建未来7天的TODO列表
-    _createList(week, weekList);
+    _createList(weeks[i], weekList);
   }
   //创建标签列表
   _createList(proTag, _tagList());
@@ -718,12 +729,6 @@ function _tagList() {
     return ele.tag === tags.tag;
   });
   return taglist;
-}
-function weeks() {
-  let week = document.getElementsByClassName('week');
-  for (let i = 2; i < week.length; i++) {
-    week[i].children[0].children[0].innerHTML = getNowTime(i).week;
-  }
 }
 
 /***/ }),

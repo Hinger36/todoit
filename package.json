@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "webpack-dev-server  --progress --inline --colors --host 0.0.0.0 --port 8080",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --host 0.0.0.0 --port 8080 --hot",
     "build": "webpack"
   },
   "repository": {
