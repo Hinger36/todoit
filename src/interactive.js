@@ -117,14 +117,6 @@ function _css(element, styles) {
   }
 }
 
-// function _getNode(node) {
-//   if(node.nodeName === 'LI') {
-//     return node;
-//   } else {
-//     return _getNode(node.parentNode);
-//   }
-// }
-
 export default {
   tagMenu,
   leftMenu,

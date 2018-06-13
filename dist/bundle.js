@@ -376,14 +376,6 @@ function _css(element, styles) {
   }
 }
 
-// function _getNode(node) {
-//   if(node.nodeName === 'LI') {
-//     return node;
-//   } else {
-//     return _getNode(node.parentNode);
-//   }
-// }
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   tagMenu,
   leftMenu,
@@ -536,7 +528,7 @@ function showList() {
   let proTag = document.getElementById('pro-tag');
   _sort();
   let todayList = todolist.filter(ele => ele.time === getNowTime().month);
-  clearList();
+  _clearList();
   //如果收信箱TODO列表为空
   if (!todolist.length) {
     //创建首页图片
@@ -577,7 +569,7 @@ function _createList(list, obj) {
   });
 }
 //清空数据列表
-function clearList() {
+function _clearList() {
   let list = document.getElementsByClassName('todolist');
   for (let i = 0, len = list.length; i < len; i++) {
     list[i].innerHTML = '';
@@ -596,6 +588,7 @@ function _indexImg(list) {
   box.appendChild(div).innerHTML = '<div></div><div>你的任务完成了！#TodolistZero</div>';
 }
 
+//TODO列表操作部分
 function listHandle() {
   let ul = document.getElementsByClassName('todolist');
   let inbox = document.getElementById('inbox');
@@ -604,25 +597,24 @@ function listHandle() {
   let proTag = document.getElementById('pro-tag');
   addEvent(inbox, 'click', event => {
     let target = event.target || event.srcElement;
+    //获取点击的li
+    let node = _getNode(target, 'li', 'ul');
+    //完成任务
+    _getTask(todolist, node);
     //删除点击的那条任务
     if (target.nodeName === 'EM') {
-      _deleteItem(todolist, target);
-    }
-    //点击某条任务，代表完成
-    if (target.nodeName === 'P') {
-      _getTask(todolist, target);
+      _deleteItem(todolist, node);
     }
   });
   addEvent(today, 'click', event => {
     let target = event.target || event.srcElement;
     let todayList = todolist.filter(ele => ele.time === getNowTime().month);
+    //获取点击的li
+    let node = _getNode(target, 'li', 'ul');
+    _getTask(todayList, node);
     //删除任务
     if (target.nodeName === 'EM') {
-      _deleteItem(todayList, target);
-    }
-    //完成任务
-    if (target.nodeName === 'P') {
-      _getTask(todayList, target);
+      _deleteItem(todayList, node);
     }
   });
 
@@ -631,28 +623,41 @@ function listHandle() {
       let target = event.target || event.srcElement;
       //未来7天中某一天的todo列表
       let weekList = todolist.filter(ele => ele.time === getNowTime(i).month);
+      let node = _getNode(target, 'li', 'ul');
+      _getTask(weekList, node);
       if (target.nodeName === 'EM') {
-        _deleteItem(weekList, target);
-      }
-      if (target.nodeName === 'P') {
-        _getTask(weekList, target);
+        _deleteItem(weekList, node);
       }
     });
   }
   addEvent(proTag, 'click', event => {
     let target = event.target || event.srcElement;
     let todayList = todolist.filter(ele => ele.time === getNowTime().month);
+    let node = _getNode(target, 'li', 'ul');
+    _getTask(_tagList(), node);
     if (target.nodeName === 'EM') {
-      _deleteItem(_tagList(), target);
-    }
-    if (target.nodeName === 'P') {
-      _getTask(_tagList(), target);
+      _deleteItem(_tagList(), node);
     }
   });
 }
+//返回目标节点，用于事件代理，使目标节点不受子节点影响
+function _getNode(node, target, parent) {
+  if (node.nodeName.toLowerCase() === parent) {
+    return;
+  }
+  if (node.nodeName.toLowerCase() === target) {
+    return node;
+  } else {
+    return _getNode(node.parentNode, target, parent);
+  }
+}
 //完成一条任务
 function _getTask(somelist, target) {
-  let index = Array.prototype.indexOf.call(target.parentNode.parentNode.children, target.parentNode);
+  if (!target) {
+    return;
+  }
+  //返回列表元素的位置
+  let index = Array.prototype.indexOf.call(target.parentNode.children, target);
   let state = true;
   todolist.forEach(ele => {
     if (ele.id === somelist[index].id) {
@@ -670,7 +675,7 @@ function _getTask(somelist, target) {
 }
 //删除一条数据
 function _deleteItem(somelist, target) {
-  let index = Array.prototype.indexOf.call(target.parentNode.parentNode.children, target.parentNode);
+  let index = Array.prototype.indexOf.call(target.parentNode.children, target);
   _indexDB__WEBPACK_IMPORTED_MODULE_0__["default"].deleteDB(somelist[index].tick, _refresh);
 }
 //刷新数据
@@ -678,6 +683,7 @@ function _refresh() {
   todolist = [];
   _indexDB__WEBPACK_IMPORTED_MODULE_0__["default"].getAllDB(todolist, showList);
 }
+//列表排序 已完成的排后面
 function _sort() {
   todolist.sort((a, b) => a.status - b.status);
 }
@@ -724,6 +730,7 @@ function getNowTime(addDay) {
   };
 }
 
+//标签列表
 function _tagList() {
   let taglist = todolist.filter(function (ele) {
     return ele.tag === tags.tag;
