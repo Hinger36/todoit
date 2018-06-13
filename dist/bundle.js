@@ -501,6 +501,29 @@ function _inputEvent(ele, callback) {
   //回车键添加任务
   _enter(ele, callback);
 }
+//回车键输入事件
+function _enter(ele, callback) {
+  //兼容safari不支持keyup
+  addEvent(ele, 'keydown', function (event) {
+    let key = event.which || event.keyCode || event.charCode;
+    if (key === 13) {
+      addEvent(ele, 'keyup', _handle(event));
+      ele.removeEventListener("keyup", _handle, false);
+
+      function _handle(event) {
+        let target = event.target || event.srcElement;
+        let key = event.which || event.keyCode || event.charCode;
+        if (target.nodeName === 'INPUT') {
+          /*Do something. 调用一些方法*/
+          if (!target.value) {
+            return;
+          }
+          callback(target);
+        }
+      }
+    }
+  });
+}
 //添加一条任务
 function _addItem(task, day, tag) {
   let todoitem = {
@@ -708,21 +731,6 @@ function _tagList() {
     return ele.tag === tags.tag;
   });
   return taglist;
-}
-
-//回车键输入事件
-function _enter(ele, callback) {
-  addEvent(ele, 'keyup', function (event) {
-    let target = event.target || event.srcElement;
-    let key = event.which || event.keyCode || event.charCode;
-    if (key === 13 && target.nodeName === 'INPUT') {
-      /*Do something. 调用一些方法*/
-      if (!target.value) {
-        return;
-      }
-      callback(target);
-    }
-  });
 }
 
 /***/ }),
