@@ -2,6 +2,7 @@ import DBbase from './indexDB';
 import api from './api';
 import inter from './interactive'
 import load from './preload'
+import { SSL_OP_MICROSOFT_BIG_SSLV3_BUFFER } from 'constants';
 
 //事件封装函数
 const addEvent = api.addEvent;
@@ -53,65 +54,49 @@ function time() {
 
 //添加待办事项
 function addTodo(item) {
-  let content = document.getElementsByClassName('content');
+  let content = document.querySelectorAll('.content');
   //收件箱
-  addEvent(content[0], 'click', event => {
-    let target = event.target || event.srcElement;
-    if (target.nodeName === 'BUTTON') {
-      let input = target.parentNode.children[0];
-      if (!input.value) {
-        return;
-      }
-      _addItem(input.value);
-      input.value = '';
-    } else {
-      return;
-    }   
+  _inputEvent(content[0], function (input) {
+    _addItem(input.value);
+    input.value = '';
   });
   //今天
-  addEvent(content[1], 'click', event => {
-    let target = event.target || event.srcElement;
-    if (target.nodeName === 'BUTTON') {
-      let input = target.parentNode.children[0];
-      if (!input.value) {
-        return;
-      }
-      _addItem(input.value);
-      input.value = '';
-    } else {
-      return;
-    }   
+  _inputEvent(content[1], function (input) {
+    _addItem(input.value);
+    input.value = '';
   });
   //未来7天
-  addEvent(content[2], 'click', event => {
-    let target = event.target || event.srcElement;
-    if (target.nodeName === 'BUTTON') {
-      let input = target.parentNode.children[0];
-      let index = Array.prototype.indexOf.call(target.parentNode.parentNode.parentNode.children, target.parentNode.parentNode);
-      if (!input.value) {
-        return;
-      }
-      _addItem(input.value, index);
-      input.value = '';
-    } else {
-      return;
-    }   
+  _inputEvent(content[2], function (input) {
+    let week = document.querySelectorAll('.week')
+    let index = Array.prototype.indexOf.call(week, input.parentNode.parentNode);
+    _addItem(input.value, index);
+    input.value = '';
   });
-  addEvent(content[3], 'click', event => {
-    let target = event.target || event.srcElement;
-    if (target.nodeName === 'BUTTON') {
-      let input = target.parentNode.children[0];
-      if (!input.value) {
-        return;
-      }
-      _addItem(input.value, null, tags.tag);
-      input.value = '';
-    } else {
-      return;
-    }   
+  _inputEvent(content[3], function (input) {
+    _addItem(input.value, null, tags.tag);
+    input.value = '';
   });
-}
 
+}
+//添加任务事件函数
+function _inputEvent(ele, callback) {
+  //点击添加按钮添加任务
+  addEvent(ele, 'click', event => {
+    let target = event.target || event.srcElement;
+    if (target.nodeName === 'BUTTON') {
+      let input = target.parentNode.children[0];
+      if (!input.value) {
+        return;
+      }
+      callback(input);
+    } 
+    else {
+      return;
+    } 
+  });
+  //回车键添加任务
+  _enter(ele, callback);
+}
 //添加一条任务
 function _addItem(task, day, tag) {
    let todoitem = {
@@ -126,6 +111,7 @@ function _addItem(task, day, tag) {
   todolist.unshift(todoitem);
   DBbase.addDB(todolist, showList);
 }
+
 
 //显示数据
 function showList() {
@@ -308,35 +294,11 @@ function getNowTime(addDay) {
   let minutes = foo.getMinutes();
   let week = foo.getDay();
   let time = {};
-  switch(week) {
-  case 0:
-    week = '星期日';
-    break;
-  case 1:
-    week = '星期一';
-    break;
-  case 2:
-    week = '星期二';
-    break;
-  case 3:
-    week = '星期三';
-    break;
-  case 4:
-    week = '星期四';
-    break;
-  case 5:
-    week = '星期五';
-    break;
-  case 6:
-    week = '星期六';
-    break;
-  default: 
-    console.log('error');
-  }
+  let weeks = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
   return time = {
     month: month + day,
     hours: hours + ':' + minutes,
-    week: week,
+    week: weeks[week],
   };
 }
 
@@ -346,4 +308,19 @@ function _tagList() {
     return ele.tag === tags.tag;
   });
   return taglist;
-}     
+}
+
+//回车键输入事件
+function _enter(ele, callback) {
+  addEvent(ele, 'keyup', function (event) {
+    let target = event.target || event.srcElement;
+    let key = event.which || event.keyCode || event.charCode;
+    if (key === 13 && target.nodeName === 'INPUT') {
+      /*Do something. 调用一些方法*/
+      if (!target.value) {
+        return;
+      }
+      callback(target);
+    }
+  })
+}
